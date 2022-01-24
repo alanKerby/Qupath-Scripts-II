@@ -9,8 +9,8 @@ The "baselineThreshold", "hematoxylinIntenstyCutoff", "snaIntensityCutoff", and 
 
 Create annotations, set protocol, and run
 Please set one protocol option to "true" and the other option to "false" */
-boolean mean = false;
-boolean meanWithFunction = true;
+boolean mean = true;
+boolean meanWithFunction = false;
 
 def baselineThreshold = 0.03 //default 0.03
 def hematoxylinIntenstyCutoff = 0.07 //default 0.07
