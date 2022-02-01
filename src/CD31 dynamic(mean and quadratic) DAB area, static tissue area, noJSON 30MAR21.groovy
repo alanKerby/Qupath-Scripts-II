@@ -1,3 +1,7 @@
+import qupath.lib.scripting.QP
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics
+import qupath.opencv.ml.pixel.OpenCVPixelClassifier
+
 /* Dynamic Detection of DAB Area and Static Tissue Area for Human Placenta Stained with CD31
 Qupath script to dynamically adjust the DAB threshold to correct for batch variation in staining intensity
 Developed in Qupath 0.2.3
@@ -9,12 +13,9 @@ The "baselineThreshold" could be adjusted to develop a novel protocol
 
 Create annotations, select protocol, and run
 Please set one protocol option to "true" and the other option to "false" */
-boolean mean = false;
-boolean meanWithFunction = true;
+boolean mean = false
+boolean meanWithFunction = true
 def baselineThreshold = 0.3 //default 0.3
-
-import qupath.lib.scripting.QP
-import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics
 
 // check setting and annotations
 if (mean == meanWithFunction) {
@@ -24,16 +25,16 @@ if (mean == meanWithFunction) {
         } else {
     if (QP.detectionObjects.size() > 0) {
         QP.clearDetections()
-        QP.fireHierarchyUpdate();
+        QP.fireHierarchyUpdate()
         QP.removeObjects(QP.getAnnotationObjects().findAll { it.getLevel() > 1 }, true)
     }
-    QP.selectAnnotations();
-    QP.mergeSelectedAnnotations();
-    def MyAnno = QP.getAnnotationObjects()
-    MyAnno[0].setPathClass(QP.getPathClass("My Annotations"))
+    QP.selectAnnotations()
+    QP.mergeSelectedAnnotations()
+    def myAnnotation = QP.getAnnotationObjects()
+    myAnnotation[0].setPathClass(QP.getPathClass("My Annotations"))
 
 // calculate dynamic threshold
-    QP.runPlugin('qupath.imagej.detect.cells.PositiveCellDetection', '{"detectionImageBrightfield": "Optical density sum",  "requestedPixelSizeMicrons": 0.5,  "backgroundRadiusMicrons": 8.0,  "medianRadiusMicrons": 0.0,  "sigmaMicrons": 1.5,  "minAreaMicrons": 10.0,  "maxAreaMicrons": 400.0,  "threshold": 0.1,  "maxBackground": 2.0,  "watershedPostProcess": true,  "excludeDAB": false,  "cellExpansionMicrons": 5.0,  "includeNuclei": true,  "smoothBoundaries": true,  "makeMeasurements": true,  "thresholdCompartment": "Nucleus: DAB OD mean",  "thresholdPositive1": ' + baselineThreshold + ',  "thresholdPositive2": 0.4,  "thresholdPositive3": 0.6,  "singleThreshold": true}');
+    QP.runPlugin('qupath.imagej.detect.cells.PositiveCellDetection', '{"detectionImageBrightfield": "Optical density sum",  "requestedPixelSizeMicrons": 0.5,  "backgroundRadiusMicrons": 8.0,  "medianRadiusMicrons": 0.0,  "sigmaMicrons": 1.5,  "minAreaMicrons": 10.0,  "maxAreaMicrons": 400.0,  "threshold": 0.1,  "maxBackground": 2.0,  "watershedPostProcess": true,  "excludeDAB": false,  "cellExpansionMicrons": 5.0,  "includeNuclei": true,  "smoothBoundaries": true,  "makeMeasurements": true,  "thresholdCompartment": "Nucleus: DAB OD mean",  "thresholdPositive1": ' + baselineThreshold + ',  "thresholdPositive2": 0.4,  "thresholdPositive3": 0.6,  "singleThreshold": true}')
     def cells = QP.getCellObjects().findAll { cell -> cell.getPathClass() == QP.getPathClass("Positive") }
     def mean_dab_list = cells.collect { cell -> QP.measurement(cell, 'Cell: DAB OD mean') } as double[]
     def mean_dab_stats = new DescriptiveStatistics(mean_dab_list)
@@ -44,7 +45,7 @@ if (mean == meanWithFunction) {
     } else {
         dyn = func_dab
     }
-    QP.clearDetections();
+    QP.clearDetections()
 
 //create tissue area annotations
     def tissue_area = """
@@ -100,7 +101,7 @@ if (mean == meanWithFunction) {
   }
 }
 """
-    def Tissue_Area = GsonTools.getInstance().fromJson(tissue_area, qupath.opencv.ml.pixel.OpenCVPixelClassifier)
+    def Tissue_Area = GsonTools.getInstance().fromJson(tissue_area, OpenCVPixelClassifier)
     createAnnotationsFromPixelClassifier(Tissue_Area, 100, 100)
 
 //create dab area annotation
@@ -181,11 +182,11 @@ if (mean == meanWithFunction) {
   }
 }
 """
-    def Dab_Area = GsonTools.getInstance().fromJson(dab_area, qupath.opencv.ml.pixel.OpenCVPixelClassifier)
+    def Dab_Area = GsonTools.getInstance().fromJson(dab_area, OpenCVPixelClassifier)
     QP.createAnnotationsFromPixelClassifier(Dab_Area, 0.0, 0.0)
 
 // add info
-    print "mean dab " + mean_dab;
+    print "mean dab " + mean_dab
     print "quad dab " + func_dab
     print 'dynDAB ' + dyn
     QP.getProjectEntry().putMetadataValue("dynDAB", dyn as String)
