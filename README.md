@@ -1,9 +1,9 @@
 ## Qupath Scripts for Dynamic Image Analysis of CD31 and Syncytial Nuclear Aggregates (SNA) in Human Placenta
 
-![](Images/Grpahical-Abstract-2021Aug20.png)
-
 ### Description
 Histological examination of the placenta significantly contributes to diagnosis in adverse birth outcomes. One challenge in image analysis is variation in staining intensity caused by batch variation. We investigated if dynamic threshold image analysis methods may increase accuracy. Placenta samples were stained for endothelial cells and syncytial nuclear aggregates and analysed in Qupath software. Dynamically setting the threshold resulted in data more similar to manual method data. The method is simple and effective at modelling the dynamic interpretation of variation in staining intensity achieved by manual methods. We anticipate dynamic methods could be used to enhance placental diagnosis.
+
+![](Images/Grpahical-Abstract-2021Aug20.jpg)
 
 ### CD31
 The CD31 script processes a positive cell detection with a low baseline DAB threshold (0.3), then the mean of the mean DAB intensity for each DAB positive cell is calculated and used as the DAB threshold for an area detection “pixel classifier”. A quadratic function (-3.633x2 + 4.432 x – 0.7132) can be applied to the calculated threshold. An area detection pixel classifier with an average channel (RGB) static threshold detects tissue area. CD31 detection is calculated as a percentage of the tissue area. 
