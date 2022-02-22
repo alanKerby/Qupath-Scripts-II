@@ -15,7 +15,7 @@ The script processes a cell detection with a low baseline haematoxylin threshold
 The scripts were developed in Qupath 0.2.3. Slides were imaged using Panoramic 250 slide scanner (3D Histech). Placenta samples were from live birth and stillbirth cases and were stained with CD31 antibody (DAKO M0823)/hematoxylin or hematoylin/eosin. Under these conditions the CD31 script with the quadratic function ("meanWithFunction") and the SNA script without a function ("mean") were optimal. Simply create annotations (ROI) and run the script and read/export the data. Further guidance on how to do this can be found in the [Qupath Docs](https://qupath.readthedocs.io/en/stable/index.html). 
 
 ### Development
-Testing is required to use the scripts under other conditions. The scripts without a function ("mean") are a good starting point from which a function can be added as required. A detailed methodology for developing dynamic scripts will be made available, and is currently under review at [Placenta](https://www.journals.elsevier.com/placenta).
+Testing is required to use the scripts under other conditions. The scripts without a function ("mean") are a good starting point from which a function can be added as required. A detailed methodology for developing dynamic scripts is published in [Placenta](https://www.sciencedirect.com/science/article/pii/S0143400422000431?via%3Dihub#).
 
 ### Authors and Acknowledgments
 Developed by Dr Alan Kerby under the supervision of Professor Alexander Heazell at the Maternal and Fetal Health Research Centre, University of Manchester, UK.
